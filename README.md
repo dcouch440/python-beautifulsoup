@@ -13,3 +13,9 @@ pip install beautifulsoup4
 ```
 pip install lxml
 ```
+
+Instructions to scape from requests
+  
+```
+pip install requests
+```
