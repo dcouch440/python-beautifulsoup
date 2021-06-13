@@ -1,13 +1,21 @@
 from bs4 import BeautifulSoup
-# first is the file to read, second is the method to use after the file is open
+import requests
 
-with open('home.html', 'r') as html_file:
-  content = html_file.read()
+html_text = requests.get(
+  'https://www.timesjobs.com/candidate/job-search.html?searchType=personalizedSearch&from=submit&txtKeywords=python&txtLocation='
+).text
 
-  soup = BeautifulSoup(content, 'lxml')
-  course_cards = soup.find_all('div', class_='card')
-  for course in course_cards:
-    course_name = course.h5.text
-    course_price = course.a.text.split()[-1]
-    # f promotes string interpolation
-    print(f'{course_name} costs {course_price}')
+soup = BeautifulSoup(html_text, 'lxml')
+job = soup.find('li', class_ = 'clearfix job-bx wht-shd-bx')
+company_name = job.find('h3', class_ = 'joblist-comp-name').text.replace(' ', '')
+skills = job.find('span', class_ = 'srp-skills').text.replace(' ', '')
+
+# span is chainable -> .find().find()
+published_date = job.find('span', class_ = 'sim-posted').span.text
+print(published_date)
+
+
+# print(f'''
+# Company Name: {company_name}
+# Required Skills: {skills}
+# ''')
